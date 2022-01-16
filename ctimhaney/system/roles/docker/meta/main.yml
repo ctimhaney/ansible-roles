@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: docker
+  author: Colin Haney
+  description: Install docker on whatever systems I have lying around
+  license: ""
+  galaxy_tags:
+    - docker
+    - ctimhaney
+
+dependencies: []
