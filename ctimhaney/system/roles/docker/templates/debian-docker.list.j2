@@ -1,0 +1,1 @@
+deb [arch={{ ansible_userspace_architecture | default(docker_debian_userspace_architecture) }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ ansible_lsb['codename'] }} stable

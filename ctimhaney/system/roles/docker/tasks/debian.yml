@@ -1,0 +1,50 @@
+---
+- block:
+    - name: manually gather userspace architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: docker_debian_userspace_architecture_check
+      changed_when: False
+
+    - name: set userspace architecture fallback variable
+      ansible.builtin.set_fact:
+        docker_debian_userspace_architecture: "{{ docker_debian_userspace_architecture_check.stdout }}"
+  when: ansible_userspace_architecture is not defined
+
+- name: uninstall older version of docker
+  ansible.builtin.apt:
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+    state: absent
+
+- name: install prerequisites
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: yes
+
+- name: add Docker GPG key to keyring
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+- name: template docker stable repository information
+  ansible.builtin.template:
+    src: debian-docker.list.j2
+    dest: /etc/apt/sources.list.d/docker.list
+
+- name: install docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+    update_cache: yes
