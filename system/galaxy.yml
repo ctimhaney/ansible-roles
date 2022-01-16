@@ -1,0 +1,11 @@
+namespace: "ctimhaney"
+name: "system"
+version: "0.0.1"
+readme: "README.md"
+authors:
+  - "Colin Haney"
+dependencies: []
+license: []
+tags:
+  - kubernetes
+repository: "https://github.com/ctimhaney/ansible-roles.git#/system/"
