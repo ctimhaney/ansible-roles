@@ -10,4 +10,5 @@ galaxy_info:
     - k8s
     - ctimhaney
 
-dependencies: []
+dependencies:
+  - ctimhaney.system.docker

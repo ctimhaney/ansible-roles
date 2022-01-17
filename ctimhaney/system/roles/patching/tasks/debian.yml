@@ -1,0 +1,11 @@
+---
+# a bit swathy and potentially an issue
+- ansible.builtin.apt:
+    name: '*'
+    state: latest
+    update_cache: yes
+  register: patching_result
+
+- ansible.builtin.reboot:
+    msg: Rebooting Post OS patching via ansible
+  when: patching_result.changed and patching_do_reboot

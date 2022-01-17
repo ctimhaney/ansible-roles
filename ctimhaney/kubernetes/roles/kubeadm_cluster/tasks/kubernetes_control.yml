@@ -1,0 +1,15 @@
+---
+- name: check for existence of a control plane
+  ansible.builtin.stat:
+    path: /etc/kubernetes/admin.conf
+  register: control_plane_stat
+
+- name: initialize the control plane if necessary
+  ansible.builtin.command:
+    cmd: >
+      kubeadm init
+      {% if kubeadm_cluster_apiserver_bind_port is defined %}--apiserver-bind-port {{ kubeadm_cluster_apiserver_bind_port }}{% endif %}
+      {% if kubeadm_cluster_apiserver_cert_extra_sans is defined and kubeadm_cluster_apiserver_cert_extra_sans | length > 0 %}--apiserver-cert-extra-sans {{ kubeadm_cluster_apiserver_cert_extra_sans | join(',') }}{% endif %}
+      {% if kubeadm_cluster_kubernetes_version is defined %}--kubernetes-version {{ kubeadm_cluster_kubernetes_version }}{% endif %}
+      {% if kubeadm_cluster_pod_network_cidr is defined %}--pod-network-cidr {{ kubeadm_cluster_pod_network_cidr }}{% endif %}
+  when: not control_plane_stat.stat.exists
