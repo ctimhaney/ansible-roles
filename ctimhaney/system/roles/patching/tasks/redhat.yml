@@ -1,0 +1,17 @@
+---
+# a bit swathy and potentially an issue
+- ansible.builtin.yum:
+    name: '*'
+    state: latest
+  register: patching_result
+  when: "ansible_distribution_major_version == '7'"
+
+- ansible.builtin.dnf:
+    name: '*'
+    state: latest
+  register: patching_result
+  when: "ansible_distribution_major_version == '8'" # TODO semver needed?
+
+- ansible.builtin.reboot:
+    msg: Rebooting Post OS patching via ansible
+  when: patching_result.changed and patching_do_reboot

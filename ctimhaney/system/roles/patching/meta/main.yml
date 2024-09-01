@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: patching
+  author: Colin Haney
+  description: Update installed packages on GNU/linux
+  license: ""
+  galaxy_tags:
+    - patching
+    - ctimhaney
+
+dependencies: []

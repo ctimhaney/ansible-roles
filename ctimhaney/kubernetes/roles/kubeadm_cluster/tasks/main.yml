@@ -1,0 +1,32 @@
+---
+- name: disable swap
+
+- name: install kubeadm and friends
+  import_tasks: kubeadm.yml
+  become: yes
+  tags:
+    - kubeadm
+
+- name: initialize the control plane
+  import_tasks: kubernetes_control.yml
+  become: yes
+  when: "'kubernetes_control' in group_names"
+  tags:
+    - control_plane
+    - kubernetes_control
+
+- name: install pod network
+  import_tasks: "{{ kubeadm_cluster_cni_yml }}"
+  become: yes
+  when: "'kubernetes_control' in group_names"
+  tags:
+    - kubernetes_pod_network
+    - pod_network
+    - cni
+
+- import_tasks: kubernetes_worker.yml
+  become: yes
+  when: "'kubernetes_worker' in group_names"
+  tags:
+    - worker_node
+    - kubernetes_worker

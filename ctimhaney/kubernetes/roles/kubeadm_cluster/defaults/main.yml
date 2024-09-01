@@ -1,0 +1,11 @@
+---
+kubeadm_cluster_apiserver_bind_port: "6443"
+kubeadm_cluster_apiserver_cert_extra_sans: []
+kubeadm_cluster_kubernetes_version: stable-1
+# kubeadm_cluster_pod_network_cidr:
+
+# TODO write some more of these.
+kubeadm_cluster_cni_yml: cni_weave_net.yml
+
+kubeadm_cluster_authorize_users:
+  - "{{ ansible_user }}"

@@ -1,0 +1,25 @@
+---
+- import_tasks: debian.yml
+  become: yes
+  tags:
+    - debian
+  when: ansible_distribution_file_variety | lower == 'debian'
+
+- import_tasks: redhat.yml
+  become: yes
+  tags:
+    - redhat
+  when: ansible_distribution_file_variety | lower == 'redhat'
+
+- name: Authorize docker_authorize_users to the docker API via CLI
+  become: yes
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+  loop: "{{ docker_authorize_users }}"
+
+- name: start and enable docker
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: yes
